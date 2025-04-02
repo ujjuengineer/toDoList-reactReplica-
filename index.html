@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to do list</title>
+    
+</head>
+<body>
+    <input type="text"></input>
+    <button onclick="addTodo()">Add todo!</button>
+  
+    <div id="todos"></div>
+    <script>
+
+
+        // these are the state part, which is written by the developer
+
+        let todos = [];
+        let counter = -1;
+        function addTodo() {
+            const data = document.querySelector("input").value; // get the data form input tag
+            document.querySelector("input").value = ""; // reset the input tag
+            // push the data inside the array todo
+            if (!data) return; // if data is empty then don't do any task
+
+            todos.push({
+            title: data,
+            listCount : ++counter // this is basically idx of this obj where it is present
+            })
+            render()
+        }
+    
+        function deleteEle(idx) {
+            // basically idx = index at which that element is present
+            todos[idx] = null; // this will delete the element present at the idx
+            render();
+        }
+  
+
+
+
+
+
+
+
+      // these are the react part, i.e., component of the webpage
+
+        function createTodoComponent(todo) {
+            const div = document.createElement("div");
+            const id = todo.listCount; // create an id for the div element
+            div.setAttribute("id", "todo-"+id);
+
+            const h1 = document.createElement("h1");
+            h1.innerHTML = todo.title;
+
+            const button = document.createElement("button");
+            button.innerHTML = "Delete";
+            button.setAttribute("onClick",`deleteEle(${id})`);
+            
+            div.append(h1)
+            div.append(button)
+            return div
+        }
+    
+        function render() {
+            document.querySelector("#todos").innerHTML = "";
+            for (let i = 0; i < todos.length; i++) {
+                if(todos[i]) {
+                    const element = createTodoComponent(todos[i]);
+                    document.querySelector("#todos").appendChild(element)
+                }
+                else continue;
+            }
+        }
+  
+    </script>
+  </body>
+</html>
